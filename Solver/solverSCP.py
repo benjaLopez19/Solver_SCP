@@ -119,7 +119,7 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType):
         for i in range(poblacion.__len__()):
 
             if mh != "GA":
-                poblacion[i] = b.aplicarBinarizacion(poblacion[i].tolist(), DS[0], DS[1], Best, matrixBin[i].tolist())
+                poblacion[i] = b.aplicarBinarizacion(poblacion[i].tolist(), DS[0], DS[1], Best, matrixBin[i].tolist(), iter, maxIter)
 
             flag, aux = instance.factibilityTest(poblacion[i])
             # print(aux)

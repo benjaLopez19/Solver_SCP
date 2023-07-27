@@ -2,15 +2,16 @@ import math
 import random
 import numpy as np 
 from scipy import special as scyesp
+from ChaoticMaps.chaoticMaps import logisticMap, piecewiseMap, sineMap, singerMap, sinusoidalMap, tentMap, circleMap
 
-def aplicarBinarizacion(ind, transferFunction, binarizationFunction, bestSolutionBin, indBin):
+def aplicarBinarizacion(ind, transferFunction, binarizationFunction, bestSolutionBin, indBin, iter, iteraciones):
     individuoBin = []
     for i in range(ind.__len__()):
         individuoBin.append(0)
 
     for i in range(ind.__len__()):
         step1 = transferir(transferFunction, ind[i])
-        individuoBin[i] = binarizar(binarizationFunction, step1, bestSolutionBin[i], indBin[i])
+        individuoBin[i] = binarizar(binarizationFunction, step1, bestSolutionBin[i], indBin[i], iter, iteraciones)
     return np.array(individuoBin)
 
 def transferir(transferFunction, dimension):
@@ -48,7 +49,7 @@ def transferir(transferFunction, dimension):
         return Z4(dimension)
 
 
-def binarizar(binarizationFunction, step1, bestSolutionBin, indBin):
+def binarizar(binarizationFunction, step1, bestSolutionBin, indBin, iter, iteraciones):
     if binarizationFunction == "STD":
         return Standard(step1)
     if binarizationFunction == "COM":
@@ -57,6 +58,20 @@ def binarizar(binarizationFunction, step1, bestSolutionBin, indBin):
         return ProblabilityStrategy(step1, indBin)
     if binarizationFunction == "ELIT":
         return Elitist(step1, bestSolutionBin)
+    if binarizationFunction == "COM_LOG":
+        return Complement_LOG(step1, indBin, iter, iteraciones)
+    if binarizationFunction == "COM_PIECE":
+        return Complement_PIECE(step1, indBin, iter, iteraciones)
+    if binarizationFunction == "COM_SINE":
+        return Complement_SINE(step1, indBin, iter, iteraciones)
+    if binarizationFunction == "COM_SINGER":
+        return Complement_SINGER(step1, indBin, iter, iteraciones)
+    if binarizationFunction == "COM_SINU":
+        return Complement_SINU(step1, indBin, iter, iteraciones)
+    if binarizationFunction == "COM_TENT":
+        return Complement_TENT(step1, indBin, iter, iteraciones)
+    if binarizationFunction == "COM_CIRCLE":
+        return Complement_CIRCLE(step1, indBin, iter, iteraciones)
 
 
 def S1(dimension):
@@ -154,6 +169,90 @@ def Standard(step1):
 
 def Complement(step1, bin):
     rand = random.uniform(0.0, 1.0)
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_LOG(step1, bin, iter, iteraciones):
+    maps = logisticMap(0.7, iteraciones)
+    rand = maps[iter]
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_PIECE(step1, bin, iter, iteraciones):
+    maps = piecewiseMap(0.7, iteraciones)
+    rand = maps[iter]
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_SINE(step1, bin, iter, iteraciones):
+    maps = sineMap(0.7, iteraciones)
+    rand = maps[iter]
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_SINGER(step1, bin, iter, iteraciones):
+    maps = singerMap(0.7, iteraciones)
+    rand = maps[iter]
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_SINU(step1, bin, iter, iteraciones):
+    maps = sinusoidalMap(0.7, iteraciones)
+    rand = maps[iter]
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_TENT(step1, bin, iter, iteraciones):
+    maps = tentMap(0.5, iteraciones)
+    rand = maps[iter]
+    binario = 0
+    if rand <= step1:
+        if bin == 1:
+            binario = 0
+        if bin == 0:
+            
+            binario =  1
+    return binario
+
+def Complement_CIRCLE(step1, bin, iter, iteraciones):
+    maps = circleMap(0.7, iteraciones)
+    rand = maps[iter]
     binario = 0
     if rand <= step1:
         if bin == 1:

@@ -11,7 +11,7 @@ def chebyshevMap(initial,iteration):
     x_previo = initial
     while i < iteration:
         
-        x = math.cos( x_previo * ( 1 / math.cos( x_previo ) ) )
+        x = math.cos( i * ( 1 / math.cos( x_previo ) ) )
         
         map_values[i] = x
         
@@ -165,9 +165,9 @@ def tentMap(initial,iteration):
     x_previo = initial
     while i < iteration:
         
-        if 0.7 > x_previo:
+        if x_previo < 0.7:
             x = x_previo / 0.7
-        if x_previo >= 0.7:
+        else:
             x = ( 10 / 3 ) * ( 1 - x_previo )
         
         map_values[i] = x
@@ -186,55 +186,55 @@ def graficar(iteration):
     
     grafico = 1
     
-    while grafico < 10:
+    while grafico < 8:
         
         if grafico == 1:
-            plt.plot(iterationes, logisticMap(0.7,100), label="logistic Map")
+            plt.plot(iterationes, logisticMap(0.7,iteration), label="logistic Map", marker="*")
             plt.title("logistic Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         if grafico == 2:
-            plt.plot(iterationes, piecewiseMap(0.7,100), label="piecewise Map")
+            plt.plot(iterationes, piecewiseMap(0.7,iteration), label="piecewise Map", marker="*")
             plt.title("piecewise Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         if grafico == 3:
-            plt.plot(iterationes, sineMap(0.7,100), label="sine Map")
+            plt.plot(iterationes, sineMap(0.7,iteration), label="sine Map", marker="*")
             plt.title("sine Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         if grafico == 4:
-            plt.plot(iterationes, singerMap(0.7,iteration), label="singer Map")
+            plt.plot(iterationes, singerMap(0.7,iteration), label="singer Map", marker="*")
             plt.title("singer Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         if grafico == 5:
-            plt.plot(iterationes, sinusoidalMap(0.7,iteration), label="sinusoidal Map")
+            plt.plot(iterationes, sinusoidalMap(0.7,iteration), label="sinusoidal Map", marker="*")
             plt.title("sinusoidal Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         if grafico == 6:
-            plt.plot(iterationes, tentMap(0.6,iteration), label="tent Map")
+            plt.plot(iterationes, tentMap(0.5,iteration), label="tent Map", marker="*")
             plt.title("tent Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         if grafico == 7:
-            plt.plot(iterationes, circleMap(0.7,iteration), label="circle Map")
+            plt.plot(iterationes, circleMap(0.7,iteration), label="circle Map", marker="*")
             plt.title("circle Map")
-            plt.xlim(0,100)
+            plt.xlim(0,iteration)
             plt.ylim(0,1)
         # if grafico == 8:
-        #     plt.plot(iterationes, chebyshevMap(0.7,iteration), label="chebyshev Map")
+        #     plt.plot(iterationes, chebyshevMap(0.7,iteration), label="chebyshev Map", marker="*")
         #     plt.title("chebyshev Map")
-        #     plt.xlim(0,100)
+        #     plt.xlim(0,iteration)
         #     plt.ylim(-1,1)
         # if grafico == 9:
-        #     plt.plot(iterationes, gaussianAndGauss_mouseMap(0.7,iteration), label="gaussian and Gauss-mouse Map")
+        #     plt.plot(iterationes, gaussianAndGauss_mouseMap(0.7,iteration), label="gaussian and Gauss-mouse Map", marker="*")
         #     plt.title("gaussian and Gauss-mouse Map")
-        #     plt.xlim(0,100)
+        #     plt.xlim(0,iteration)
         #     plt.ylim(0,1)
-        plt.xlabel('$iterations (k)$')
-        plt.ylabel('$Value (x_{k})$')
+        # plt.xlabel('$iterations (k)$')
+        # plt.ylabel('$Value (x_{k})$')
         # plt.legend(loc="upper right")
         
         
@@ -252,4 +252,4 @@ def graficar(iteration):
 
 
 
-graficar(100)
+graficar(50)

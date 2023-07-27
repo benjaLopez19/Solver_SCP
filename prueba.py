@@ -1,33 +1,20 @@
-import random
-import numpy as np
+from ChaoticMaps.chaoticMaps import logisticMap, piecewiseMap, sineMap, singerMap, sinusoidalMap, tentMap, circleMap
 
 
-# crossover operator
-# def crossover(parent1, parent2, prob_crossover):
-       
-#     pivot = int(np.round( (len(parent1) * prob_crossover) , 0))
-    
-#     print(pivot)
-    
-#     child1 = parent1[:pivot] + parent2[pivot:]
-#     child2 = parent2[:pivot] + parent1[pivot:]
-    
-#     return child1, child2
+iteration = 100
 
-# hijo1 = np.array([1,1,1,1,1,1,1,1])
-# hijo2 = np.array([0,0,0,0,0,0,0,0])
+maps = logisticMap(0.7,iteration)
 
-# print(hijo1)
-# print(hijo2)
+print(maps)
 
-# prob_crossover = 0.6
+#  piecewiseMap(0.7,iteration)
 
-# hijo1, hijo2 = crossover(hijo1.tolist(),hijo2.tolist(),prob_crossover)
+#  sineMap(0.7,iteration)
 
-# print(hijo1)
-# print(hijo2)
+#  singerMap(0.7,iteration)
 
-param = "iter:500,pop:20,DS:V4-STD,cros:0.6;mut:0.01"
-paramGA = param.split(",")[3]
-print(float(paramGA.split(";")[0].split(":")[1]))
-print(float(paramGA.split(";")[1].split(":")[1]))
+#  sinusoidalMap(0.7,iteration)
+
+#  tentMap(0.5,iteration)
+
+#  circleMap(0.7,iteration)

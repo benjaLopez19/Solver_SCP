@@ -4,13 +4,10 @@ import json
 bd = BD()
 
 
-fs  = False
-scp = False
+scp = True
 ben = False
-empatia = True
-mkp = False
 ml = False
-mhs = ['GA']
+mhs = ['WOA']
 cantidad = 0
 
 DS_actions = [
@@ -34,126 +31,12 @@ paramsML = json.dumps({
     'stateQ'        : 2
 })
 
-
-if empatia:
-    # poblar ejecuciones FS
-    instancias = bd.obtenerInstancias(f'''
-                                      'EMPATIA-9'
-                                      ''')
-    iteraciones = 500
-    experimentos = 3
-    poblacion = 50
-    for instancia in instancias:
-
-        for mh in mhs:
-            if ml:
-                data = {}
-                data['MH']          = mh
-                data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},cros:0.6;mut:0.01'
-                data['ML']          = 'Q-Learning'
-                data['paramML']     = paramsML
-                data['ML_FS']       = ''
-                data['paramML_FS']  = ''
-                data['estado']      = 'pendiente'
-
-                cantidad +=experimentos
-                bd.insertarExperimentos(data, experimentos, instancia[0])
-            else:
-                data = {}
-                data['MH']          = mh
-                data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:V4-STD,cros:0.9;mut:0.01'
-                # data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:V4-ELIT'
-                # data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:X4-ELIT'
-                # data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:Z4-ELIT'
-                data['ML']          = ''
-                data['paramML']     = ''
-                data['ML_FS']       = ''
-                data['paramML_FS']  = ''
-                data['estado']      = 'pendiente'
-
-                cantidad +=experimentos
-                bd.insertarExperimentos(data, experimentos, instancia[0])
-
-if fs:
-    # poblar ejecuciones FS
-    # instancias = bd.obtenerInstancias(f'''
-    #                                   "sonar","ionosphere","Immunotherapy","Divorce","wdbc","breast-cancer-wisconsin"
-    #                                   ''')
-    instancias = bd.obtenerInstancias(f'''
-                                      "dat_3_3_1"
-                                      ''')
-    iteraciones = 400
-    experimentos = 1
-    poblacion = 20
-    # clasificadores = ["KNN","RandomForest","Xgboost"]
-    clasificadores = ["KNN"]
-    # DS_actions = [
-    #     'S4-STD', 'S4-COM', 'S4-ELIT',
-    #     'V4-STD', 'V4-COM', 'V4-ELIT',
-    #     'X4-STD', 'X4-COM', 'X4-ELIT',
-    #     'Z4-STD', 'Z4-COM', 'Z4-ELIT']
-    DS_actions = ['S4-STD']
-    # clasificadores = ["KNN"]
-    for instancia in instancias:
-
-        for mh in mhs:
-            for clasificador in clasificadores:
-                if ml:
-                    data = {}
-                    data['MH']          = mh
-                    data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)}'
-                    data['ML']          = 'Q-Learning'
-                    data['paramML']     = paramsML
-                    data['ML_FS']       = clasificador
-                    data['paramML_FS']  = f'k:5'
-                    data['estado']      = 'pendiente'
-
-                    cantidad +=experimentos
-                    bd.insertarExperimentos(data, experimentos, instancia[0])
-                else:
-                    for ds in DS_actions:
-                        data = {}
-                        data['MH']          = mh
-                        data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:{ds}'
-                        # data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:S4-COM'
-                        data['ML']          = ''
-                        data['paramML']     = ''
-                        data['ML_FS']       = clasificador
-                        data['paramML_FS']  = f'k:5'
-                        data['estado']      = 'pendiente'
-
-                        cantidad +=experimentos
-                        bd.insertarExperimentos(data, experimentos, instancia[0])
-
 if scp:
     # poblar ejecuciones SCP
     instancias = bd.obtenerInstancias(f'''
                                       "scp41"
                                       ''')
-    iteraciones = 1000
-    experimentos = 1
-    poblacion = 50
-    for instancia in instancias:
-
-        for mh in mhs:
-            data = {}
-            data['MH']          = mh
-            data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:V4-ELIT,repair:complex'
-            data['ML']          = ''
-            data['paramML']     = ''
-            data['ML_FS']       = ''
-            data['paramML_FS']  = ''
-            data['estado']      = 'pendiente'
-
-            cantidad +=experimentos
-            bd.insertarExperimentos(data, experimentos, instancia[0])
-
-if mkp:
-    # poblar ejecuciones MKP
-    instancias = bd.obtenerInstancias(f'''
-                                      "mknap1_2","mknap2_2"
-                                      ''')
-    iteraciones = 500
+    iteraciones = 20
     experimentos = 1
     poblacion = 10
     for instancia in instancias:
@@ -161,7 +44,7 @@ if mkp:
         for mh in mhs:
             data = {}
             data['MH']          = mh
-            data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:S4-ELIT'
+            data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:S4-COM,repair:complex'
             data['ML']          = ''
             data['paramML']     = ''
             data['ML_FS']       = ''
