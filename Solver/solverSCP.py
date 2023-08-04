@@ -14,7 +14,7 @@ from Discretization import discretization as b
 from util import util
 from BD.sqlite import BD
 
-def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType):
+def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
     
     dirResult = './Resultados/'
     instance = SCP(instancia)
@@ -113,13 +113,16 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType):
         if mh == "MFO":
             poblacion, bestSolutions = iterarMFO(maxIter, iter, instance.getColumns(), len(poblacion), poblacion, bestSolutions, fitness, BestFitnessArray )
         if mh == "GA":
-            poblacion = iterarGA(poblacion.tolist())
+            
+            cross = float(param.split(";")[0].split(":")[1])
+            muta = float(param.split(";")[1].split(":")[1])
+            poblacion = iterarGA(poblacion.tolist(), fitness, cross, muta)
         
         # Binarizo, calculo de factibilidad de cada individuo y calculo del fitness
         for i in range(poblacion.__len__()):
 
             if mh != "GA":
-                poblacion[i] = b.aplicarBinarizacion(poblacion[i].tolist(), DS[0], DS[1], Best, matrixBin[i].tolist(), iter, maxIter)
+                poblacion[i] = b.aplicarBinarizacion(poblacion[i].tolist(), DS[0], DS[1], Best, matrixBin[i].tolist())
 
             flag, aux = instance.factibilityTest(poblacion[i])
             # print(aux)

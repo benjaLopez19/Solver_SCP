@@ -52,6 +52,7 @@ class SCP:
 
         # Lectura de las dimensiones del problema
         line = file.readline().split()
+        # print(f'Dimensiones de la matriz de cobertura: {str(line)}')
         self.setRows(int(line[0]))
         self.setColumns(int(line[1]))
 
@@ -67,12 +68,11 @@ class SCP:
                 countDim +=1
             line = file.readline()
         
-        # print("Costos para cada columna: "+str(costos))
-        # print("Cantidad de costos para cada columna: "+str(costos.__len__()))
+        # print(f'Costos para cada columna: {str(costos)}')
+        # print(f'Cantidad de costos para cada columna: {str(costos.__len__())}')
 
         # Preparar matriz de restricciones (matriz A)
         constrains = np.zeros((self.getRows(),self.getColumns()), dtype=np.int32).tolist()
-
         # Lecutra de Restricciones
         row = 0
 
@@ -92,8 +92,8 @@ class SCP:
                     constrains[row][column] = 1
                     countUnos +=1
                 line = file.readline()
-            # print("Coberturas para la fila "+str(row)+": "+str(constrains[row]))
-            # print("Suma de validacion: "+str(sum(constrains[row])))
+            # print(f'Coberturas para la fila {str(row)}: {str(constrains[row])}')
+            # print(f'Suma de validacion: {str(sum(constrains[row]))}')
 
             row += 1
         
@@ -101,7 +101,8 @@ class SCP:
 
         self.setCoverange(np.array(constrains))
         self.setCost(np.array(costos))
-        # print("Chequeo de cobertura: "+str(constrains[0][90]))  
+        
+        print("Chequeo de cobertura: "+str(constrains[0][90]))  
      
     def obtenerOptimo(self, archivoInstancia):
         orden = {

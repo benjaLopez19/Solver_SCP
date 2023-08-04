@@ -46,7 +46,10 @@ while len(data) > 0:
         repair = parametrosMH.split(",")[3].split(":")[1]
         ds.append(parametrosMH.split(",")[2].split(":")[1].split("-")[0])
         ds.append(parametrosMH.split(",")[2].split(":")[1].split("-")[1])
-        solverSCP(id, mh, maxIter, pop, instancia, ds, repair)
+        
+        parMH = parametrosMH.split(",")[4]
+        print(parMH)
+        solverSCP(id, mh, maxIter, pop, instancia, ds, repair, parMH)
     
     if problema == 'BEN':
         bd.actualizarExperimento(id, 'ejecutando')

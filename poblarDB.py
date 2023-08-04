@@ -44,7 +44,7 @@ if scp:
         for mh in mhs:
             data = {}
             data['MH']          = mh
-            data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:S4-COM,repair:complex'
+            data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:S4-ELIT,repair:complex,cros:0.9;mut:0.20'
             data['ML']          = ''
             data['paramML']     = ''
             data['ML_FS']       = ''

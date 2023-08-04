@@ -1,20 +1,8 @@
-from ChaoticMaps.chaoticMaps import logisticMap, piecewiseMap, sineMap, singerMap, sinusoidalMap, tentMap, circleMap
+from scipy.stats import mannwhitneyu
 
+x = [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]
+y = [9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8]
 
-iteration = 100
+valor = mannwhitneyu(x,y,alternative='less')
 
-maps = logisticMap(0.7,iteration)
-
-print(maps)
-
-#  piecewiseMap(0.7,iteration)
-
-#  sineMap(0.7,iteration)
-
-#  singerMap(0.7,iteration)
-
-#  sinusoidalMap(0.7,iteration)
-
-#  tentMap(0.5,iteration)
-
-#  circleMap(0.7,iteration)
+print(valor)

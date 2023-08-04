@@ -8,8 +8,8 @@ def select_parent(population, fitness):
     # parent1 = random.choice(population)
     # parent2 = random.choice(population)
     
-    parent1 = population[position[1]]
-    parent2 = population[position[2]]
+    parent1 = population[position[0]]
+    parent2 = population[position[1]]
     
     # print(len(population))
     # while parent2 == parent1:
@@ -49,5 +49,3 @@ def iterarGA(population, fitness, cross, muta):
         new_population.extend([child1, child2])    
     
     return np.array(new_population)
-        
-        
