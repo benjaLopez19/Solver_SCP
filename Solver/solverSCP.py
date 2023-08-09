@@ -113,7 +113,6 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
         if mh == "MFO":
             poblacion, bestSolutions = iterarMFO(maxIter, iter, instance.getColumns(), len(poblacion), poblacion, bestSolutions, fitness, BestFitnessArray )
         if mh == "GA":
-            
             cross = float(param.split(";")[0].split(":")[1])
             muta = float(param.split(";")[1].split(":")[1])
             poblacion = iterarGA(poblacion.tolist(), fitness, cross, muta)

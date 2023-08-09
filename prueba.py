@@ -1,8 +1,5 @@
-from scipy.stats import mannwhitneyu
+from Problem.SCP.problem import SCP
 
-x = [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1]
-y = [9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8,9,8]
+instance = SCP('scp41')
 
-valor = mannwhitneyu(x,y,alternative='less')
-
-print(valor)
+print(instance.getColumns())

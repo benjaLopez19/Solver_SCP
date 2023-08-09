@@ -25,7 +25,7 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
     
     results = open(dirResult+mh+"_"+function+"_"+str(id)+".csv", "w")
     results.write(
-        f'iter,fitness,time,XPL,XPT\n'
+        f'iter,fitness,time,XPL,XPT,DIV\n'
     )
     
     # Genero una población inicial binaria, esto ya que nuestro problema es binario
@@ -74,9 +74,10 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
             ", peor iter: "+str(fitness[solutionsRanking[pop-1]])+
             ", time (s): "+str(round(tiempoInicializacion2-tiempoInicializacion1,3))+
             ", XPT: "+str(XPT)+
-            ", XPL: "+str(XPL))
+            ", XPL: "+str(XPL)+
+            ", DIV: "+str(maxDiversidad))
     results.write(
-        f'0,{str(BestFitness)},{str(round(tiempoInicializacion2-tiempoInicializacion1,3))},{str(XPL)},{str(XPT)}\n'
+        f'0,{str(BestFitness)},{str(round(tiempoInicializacion2-tiempoInicializacion1,3))},{str(XPL)},{str(XPT)},{maxDiversidad}\n'
     )
     
     for iter in range(0, maxIter):
@@ -127,10 +128,11 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
             ", peor iter: "+str(fitness[solutionsRanking[pop-1]])+
             ", time (s): "+str(round(timeEjecuted,3))+
             ", XPT: "+str(XPT)+
-            ", XPL: "+str(XPL))
+            ", XPL: "+str(XPL)+
+            ", DIV: "+str(div_t))
         
         results.write(
-            f'{iter+1},{str(BestFitness)},{str(round(timeEjecuted,3))},{str(XPL)},{str(XPT)}\n'
+            f'{iter+1},{str(BestFitness)},{str(round(timeEjecuted,3))},{str(XPL)},{str(XPT)},{str(div_t)}\n'
         )
     print("------------------------------------------------------------------------------------------------------")
     print("Best fitness: "+str(BestFitness))

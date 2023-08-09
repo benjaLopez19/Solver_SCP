@@ -6,8 +6,7 @@ bd = BD()
 
 scp = True
 ben = False
-ml = False
-mhs = ['WOA']
+mhs = ['PSA','SCA','WOA','GWO']
 cantidad = 0
 
 DS_actions = [
@@ -34,8 +33,9 @@ paramsML = json.dumps({
 if scp:
     # poblar ejecuciones SCP
     instancias = bd.obtenerInstancias(f'''
-                                      "scp41"
+                                      'scp42','scp43'
                                       ''')
+    print(instancias)
     iteraciones = 20
     experimentos = 1
     poblacion = 10
@@ -57,11 +57,11 @@ if scp:
 if ben:
     # poblar ejecuciones Benchmark
     instancias = bd.obtenerInstancias(f'''
-                                      "F7","F8","F9","F10"
+                                      "F2","F3"
                                       ''')
     iteraciones = 500
-    experimentos = 31
-    poblacion = 30
+    experimentos = 5
+    poblacion = 100
     for instancia in instancias:
         for mh in mhs:
             data = {}
