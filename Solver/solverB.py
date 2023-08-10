@@ -28,7 +28,7 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
         f'iter,fitness,time,XPL,XPT,DIV\n'
     )
     
-    # Genero una población inicial binaria, esto ya que nuestro problema es binario
+    # Genero una población inicial continua. Acá estamos resolviendo las funciones matemáticas benchmark.
     poblacion = np.random.uniform(low=lb, high=ub, size = (pop, dim))
     
     maxDiversidad = diversidadHussain(poblacion)

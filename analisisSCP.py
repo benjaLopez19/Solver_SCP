@@ -26,7 +26,7 @@ incluye_sca = False
 bd = BD()
 
 instancias = bd.obtenerInstancias(f'''
-                                  "scp41","scp42","scp43"
+                                  "scp41","scp42"
                                   ''')
 print(instancias)
 

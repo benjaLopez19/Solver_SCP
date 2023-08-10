@@ -102,7 +102,7 @@ class SCP:
         self.setCoverange(np.array(constrains))
         self.setCost(np.array(costos))
         
-        print("Chequeo de cobertura: "+str(constrains[0][90]))  
+        # print("Chequeo de cobertura: "+str(constrains[0][90]))  
      
     def obtenerOptimo(self, archivoInstancia):
         orden = {
