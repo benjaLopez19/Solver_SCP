@@ -10,6 +10,7 @@ from Metaheuristics.WOA import iterarWOA
 from util import util
 from BD.sqlite import BD
 import os
+import random
 
 def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
     

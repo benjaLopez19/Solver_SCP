@@ -26,7 +26,7 @@ incluye_sca = False
 bd = BD()
 
 instancias = bd.obtenerInstancias(f'''
-                                  "scp41","scp42"
+                                  "scp41"
                                   ''')
 print(instancias)
 
@@ -297,7 +297,7 @@ for instancia in instancias:
     plt.close('all')
     print(f'Grafico de violines con fitness para la instancia {instancia[1]} realizado con exito')
     
-    os.remove(dirResultado+"/fitness_"+instancia[1]+'.csv')
+    # os.remove(dirResultado+"/fitness_"+instancia[1]+'.csv')
     
     print("------------------------------------------------------------------------------------------------------------")
 
