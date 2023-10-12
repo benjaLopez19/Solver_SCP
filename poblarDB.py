@@ -6,7 +6,7 @@ bd = BD()
 
 scp = False
 ben = True
-mhs = ['WOA','GWO']
+mhs = ['HBA']
 cantidad = 0
 
 DS_actions = [
@@ -57,11 +57,11 @@ if scp:
 if ben:
     # poblar ejecuciones Benchmark
     instancias = bd.obtenerInstancias(f'''
-                                      "F1","F2"
+                                      "F1","F2","F3","F4","F5","F6","F7"
                                       ''')
-    iteraciones = 500
+    iteraciones = 300
     experimentos = 3 
-    poblacion = 10
+    poblacion = 20
     for instancia in instancias:
         for mh in mhs:
             data = {}
