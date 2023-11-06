@@ -1,14 +1,13 @@
 import random
 import numpy as np
 
-def iterarRSA(maxIter, t, dimension, poblacion, Best_P):
+def iterarRSA(maxIter, t, dimension, poblacion, Best_P,LB,UB):
     #PARAM
     alfa = 0.1
     beta = 0.1
     #Small value epsilon
     eps = 1e-10
-    #Lower and Upper bound, paper doesn't define values
-    LB,UB = -10, 10
+    
     #UPDATE ES
     r3 = random.randint(-1, 1) #r3 denotes to a random integer number between −1 and 1, pag4
     ES = 2*r3*(1-(1/maxIter))

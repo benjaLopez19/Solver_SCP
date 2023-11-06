@@ -7,6 +7,8 @@ from Metaheuristics.SCA import iterarSCA
 from Metaheuristics.WOA import iterarWOA
 from Metaheuristics.MFO import iterarMFO
 from Metaheuristics.GA import iterarGA
+from Metaheuristics.RSA import iterarRSA
+from Metaheuristics.PSO import iterarPSO
 from Diversity.hussainDiversity import diversidadHussain
 from Diversity.XPLXTP import porcentajesXLPXPT
 import time
@@ -14,7 +16,7 @@ from Discretization import discretization as b
 from util import util
 from BD.sqlite import BD
 
-def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
+def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param,verbose):
     
     dirResult = './Resultados/'
     instance = SCP(instancia)
@@ -62,6 +64,10 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
     # PARA MFO
     BestFitnessArray = fitness[solutionsRanking] 
     bestSolutions = poblacion[solutionsRanking]
+
+    if mh == 'PSO':
+        best_pop = poblacion.copy()
+        best_fit = fitness.copy()
     
     matrixBin = poblacion.copy()
     
@@ -112,6 +118,12 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
             poblacion = iterarPSA(maxIter, iter, instance.getColumns(), poblacion.tolist(), Best.tolist())
         if mh == "MFO":
             poblacion, bestSolutions = iterarMFO(maxIter, iter, instance.getColumns(), len(poblacion), poblacion, bestSolutions, fitness, BestFitnessArray )
+        #REVISAR BIEN CUÁLES SON LOS LÍMITES QUE DEBERÍA PONER
+        if mh == 'RSA':
+            poblacion = iterarRSA(maxIter, iter, instance.getColumns(), poblacion.tolist(), Best.tolist(),-100,100)
+        if mh == 'PSO':
+            poblacion = iterarPSO(maxIter, iter, instance.getColumns(), poblacion.tolist(), Best.tolist(),best_pop)
+            aux_pob = poblacion.copy()
         if mh == "GA":
             cross = float(param.split(";")[0].split(":")[1])
             muta = float(param.split(";")[1].split(":")[1])
@@ -119,7 +131,7 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
         
         # Binarizo, calculo de factibilidad de cada individuo y calculo del fitness
         for i in range(poblacion.__len__()):
-
+            
             if mh != "GA":
                 poblacion[i] = b.aplicarBinarizacion(poblacion[i].tolist(), DS[0], DS[1], Best, matrixBin[i].tolist())
 
@@ -131,6 +143,12 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
 
             fitness[i] = instance.fitness(poblacion[i])
 
+        if mh == 'PSO':
+            for i in range(0, poblacion.__len__()):
+            # Calculate objective function for each particle
+                if best_fit[i] > fitness[i]:
+                    best_fit[i] = fitness[i]
+                    best_pop[i, :] = aux_pob[i, :].copy()
 
         solutionsRanking = np.argsort(fitness) # rankings de los mejores fitness
         
@@ -151,16 +169,17 @@ def solverSCP(id, mh, maxIter, pop, instancia, DS, repairType, param):
         # calculo mi tiempo para la iteracion t
         timeEjecuted = timerFinal - timerStart
         
-        print("iteracion: "+
-            str(iter+1)+
-            ", best: "+str(BestFitness)+
-            ", mejor iter: "+str(fitness[solutionsRanking[0]])+
-            ", peor iter: "+str(fitness[solutionsRanking[pop-1]])+
-            ", optimo: "+str(instance.getOptimum())+
-            ", time (s): "+str(round(timeEjecuted,3))+
-            ", XPT: "+str(XPT)+
-            ", XPL: "+str(XPL)+
-            ", DIV: "+str(div_t))
+        if verbose:
+            print("iteracion: "+
+                str(iter+1)+
+                ", best: "+str(BestFitness)+
+                ", mejor iter: "+str(fitness[solutionsRanking[0]])+
+                ", peor iter: "+str(fitness[solutionsRanking[pop-1]])+
+                ", optimo: "+str(instance.getOptimum())+
+                ", time (s): "+str(round(timeEjecuted,3))+
+                ", XPT: "+str(XPT)+
+                ", XPL: "+str(XPL)+
+                ", DIV: "+str(div_t))
         
         results.write(
             f'{iter+1},{str(BestFitness)},{str(round(timeEjecuted,3))},{str(XPL)},{str(XPT)},{str(div_t)}\n'

@@ -4,9 +4,9 @@ import json
 bd = BD()
 
 
-scp = False
-ben = True
-mhs = ['HBA']
+scp = True
+ben = False
+mhs = ['PSO','GWO','RSA']
 cantidad = 0
 
 DS_actions = [
@@ -29,39 +29,42 @@ paramsML = json.dumps({
     'rewardType'    : 'withPenalty1',
     'stateQ'        : 2
 })
+binarizaciones = []
 
 if scp:
     # poblar ejecuciones SCP
     instancias = bd.obtenerInstancias(f'''
-                                      'scp41'
+                                      'scp41','scp51','scp61','scpa1','scpb1','scpc1','scpd1','scpnre1','scpnrf1'
                                       ''')
     print(instancias)
-    iteraciones = 20
-    experimentos = 3
-    poblacion = 10
+    iteraciones = 500
+    experimentos = 31
+    poblacion = 20
     for instancia in instancias:
 
         for mh in mhs:
-            data = {}
-            data['MH']          = mh
-            data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:Z4-COM,repair:complex,cros:0.9;mut:0.20'
-            data['ML']          = ''
-            data['paramML']     = ''
-            data['ML_FS']       = ''
-            data['paramML_FS']  = ''
-            data['estado']      = 'pendiente'
+            binarizaciones = ['Z4-STD','Z4-COM','Z4-ELIT','X4-STD','X4-COM','X4-ELIT']
+            for binarizacion in binarizaciones:
+                data = {}
+                data['MH']          = mh
+                data['paramMH']     = f'iter:{str(iteraciones)},pop:{str(poblacion)},DS:{binarizacion},repair:complex,cros:0.9;mut:0.20'
+                data['ML']          = ''
+                data['paramML']     = ''
+                data['ML_FS']       = ''
+                data['paramML_FS']  = ''
+                data['estado']      = 'pendiente'
 
-            cantidad +=experimentos
-            bd.insertarExperimentos(data, experimentos, instancia[0])
+                cantidad +=experimentos
+                bd.insertarExperimentos(data, experimentos, instancia[0])
             
 if ben:
     # poblar ejecuciones Benchmark
     instancias = bd.obtenerInstancias(f'''
-                                      "F1","F2","F3","F4","F5","F6","F7"
+                                      "F3","F4"
                                       ''')
-    iteraciones = 300
-    experimentos = 3 
-    poblacion = 20
+    iteraciones = 500
+    experimentos = 5 
+    poblacion = 40
     for instancia in instancias:
         for mh in mhs:
             data = {}

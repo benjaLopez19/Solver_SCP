@@ -13,21 +13,21 @@ def iterarHBA(maxIter, t, dimension, poblacion, fitness, pob):
     vec_flag=np.array(vec_flag)
     posicionesOrdenadas = util.selectionSort(fitness)
     #print(poblacion[0,0])
-    #Calculo de intensidad################################################################
 
-    epsilon = 1
+    ########################Calculo de intensidad#########################################
+    epsilon = 0.00000000000000022204
     di = np.zeros(pob)
     S = np.zeros(pob)
     I = np.zeros(pob)
-    fl=-10                    # The lower bound of the search interval.
-    ul=10                      # The upper bound of the search interval.
+    #fl=-10                    # The lower bound of the search interval.
+    #ul=10                     # The upper bound of the search interval.
     poblacion = np.array(poblacion)
-    lb = fl*np.ones([dimension, 1])
-    ub = ul*np.ones([dimension, 1])
+    #lb = fl*np.ones([dimension, 1])
+    #ub = ul*np.ones([dimension, 1])
 
     for j in range(pob):
         if j < pob-1:
-            di[j] = LA.norm([[poblacion[j,:]-poblacion[posicionesOrdenadas[0],:]+epsilon]])
+            di[j] = LA.norm([[poblacion[j,:]-poblacion[posicionesOrdenadas[0],:]+epsilon]]) #creo que está al revés, xprey - xi, el código en matlab esta así
             S[j]  = LA.norm([[poblacion[j,:]-poblacion[j+1,:]+epsilon]])
             di[j] = np.power(di[j], 2)
             S[j]  = np.power(S[j], 2)
@@ -43,13 +43,13 @@ def iterarHBA(maxIter, t, dimension, poblacion, fitness, pob):
 
         #print("S[",j,"]", S[j])
         #print("di[",j,"]", di[j])
-        I[j] = n*S[j]/[4*math.pi*di[j]]
+        I[j] = n*S[j]/[4*math.pi*di[j]] #se ve bien
        
     
     #######################################################################################
         #Vs = random.random()
-        F=vec_flag[math.floor((2*random.random()))]
-        for k in range(dimension):
+        F=vec_flag[math.floor((2*random.random()))] #revisar, pero se ve bien
+        for k in range(dimension): #seguro que la actualización es po dimension y no individuo?
             Vs = random.random()
             di_number=poblacion[posicionesOrdenadas[0],k]-poblacion[j,k]
             if Vs < 0.5:
@@ -62,7 +62,7 @@ def iterarHBA(maxIter, t, dimension, poblacion, fitness, pob):
                 r7 = random.random()
                 poblacion[j,k] = poblacion[posicionesOrdenadas[0],j]+F*r7*alpha*di_number
              
-        poblacion[j,:] = BorderCheck1(poblacion[j,:],lb,ub,dimension)
+        #poblacion[j,:] = BorderCheck1(poblacion[j,:],lb,ub,dimension)
         #PONER FUNCIÓN DE CORECCIÓN DE BORDES
         #print(poblacion)
         #print(poblacion)
@@ -85,7 +85,9 @@ def BorderCheck1(X,lb,ub,dim):
             X[j] = lb[j]
     return X    
 
+'''
 def verificar(X,dim):
+#funcion para ver si habían nan en los vectores
     for i in range(dim):
         if X[i] == nan:
             return True
@@ -94,4 +96,4 @@ def verificar(X,dim):
         if X[i] == inf:
             return True
 
-    return False
+    return False'''

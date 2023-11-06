@@ -22,6 +22,8 @@ incluye_gwo = False
 incluye_psa = False
 incluye_woa = False
 incluye_sca = False
+incluye_rsa = False
+incluye_pso = False
 
 bd = BD()
 
@@ -43,36 +45,50 @@ for instancia in instancias:
     divGWO = [] 
     divWOA = [] 
     divPSA = []
+    divPSO = []
+    divRSA = []
     
     fitnessSCA = [] 
     fitnessGWO = [] 
     fitnessWOA = [] 
     fitnessPSA = []
+    fitnessPSO = []
+    fitnessRSA = []
 
     timeSCA = []
     timeGWO = []
     timeWOA = []
     timePSA = []
+    timePSO = []
+    timeRSA = []
 
     xplSCA = [] 
     xplGWO = [] 
     xplWOA = [] 
     xplPSA = []
+    xplPSO = []
+    xplRSA = []
 
     xptSCA = []
     xptGWO = []
     xptWOA = []
     xptPSA = []
+    xptPSO = []
+    xptRSA = []
     
     bestFitnessSCA = []
     bestFitnessGWO = []
     bestFitnessWOA = []
     bestFitnessPSA = []
+    bestFitnessPSO = []
+    bestFitnessRSA = []
 
     bestTimeSCA = []
     bestTimeGWO = []
     bestTimeWOA = []
     bestTimePSA = []
+    bestTimePSO = []
+    bestTimeRSA = []
     
     for d in blob:
         
@@ -111,6 +127,18 @@ for instancia in instancias:
             archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
             incluye_sca = True
         
+        if mh == "PSO" and incluye_pso == False:
+            archivoResumenFitness.write(",best,avg. fitness, std fitness")
+            archivoResumenTimes.write(", min time (s), avg. time (s), std time (s)")
+            archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
+            incluye_pso = True
+        
+        if mh == "RSA" and incluye_rsa == False:
+            archivoResumenFitness.write(",best,avg. fitness, std fitness")
+            archivoResumenTimes.write(", min time (s), avg. time (s), std time (s)")
+            archivoResumenPercentage.write(", avg. XPL%, avg. XPT%")
+            incluye_rsa = True
+        
         problem = nombreArchivo.split('_')[1]
 
         iteraciones = data['iter']
@@ -144,6 +172,18 @@ for instancia in instancias:
             xplWOA.append(np.round(np.mean(xpl), decimals=2))
             xptWOA.append(np.round(np.mean(xpt), decimals=2))
             archivoFitness.write(f'WOA,{str(np.min(fitness))}\n')
+        if mh == 'PSO':
+            fitnessPSO.append(np.min(fitness))
+            timePSO.append(np.round(np.sum(time),3))
+            xplPSO.append(np.round(np.mean(xpl), decimals=2))
+            xptPSO.append(np.round(np.mean(xpt), decimals=2))
+            archivoFitness.write(f'PSO,{str(np.min(fitness))}\n')
+        if mh == 'RSA':
+            fitnessRSA.append(np.min(fitness))
+            timeRSA.append(np.round(np.sum(time),3))
+            xplRSA.append(np.round(np.mean(xpl), decimals=2))
+            xptRSA.append(np.round(np.mean(xpt), decimals=2))
+            archivoFitness.write(f'RSA,{str(np.min(fitness))}\n')
             
         if graficos:
 
@@ -201,6 +241,16 @@ for instancia in instancias:
         archivoResumenFitness.write(f''',{np.min(fitnessWOA)},{np.round(np.average(fitnessWOA),3)},{np.round(np.std(fitnessWOA),3)}''')
         archivoResumenTimes.write(f''',{np.min(timeWOA)},{np.round(np.average(timeWOA),3)},{np.round(np.std(timeWOA),3)}''')
         archivoResumenPercentage.write(f''',{np.round(np.average(xplWOA),3)},{np.round(np.average(xplWOA),3)}''')
+    
+    if incluye_pso:
+        archivoResumenFitness.write(f''',{np.min(fitnessPSO)},{np.round(np.average(fitnessPSO),3)},{np.round(np.std(fitnessPSO),3)}''')
+        archivoResumenTimes.write(f''',{np.min(timePSO)},{np.round(np.average(timePSO),3)},{np.round(np.std(timePSO),3)}''')
+        archivoResumenPercentage.write(f''',{np.round(np.average(xplPSO),3)},{np.round(np.average(xplPSO),3)}''')
+
+    if incluye_rsa:
+        archivoResumenFitness.write(f''',{np.min(fitnessRSA)},{np.round(np.average(fitnessRSA),3)},{np.round(np.std(fitnessRSA),3)}''')
+        archivoResumenTimes.write(f''',{np.min(timeRSA)},{np.round(np.average(timeRSA),3)},{np.round(np.std(timeRSA),3)}''')
+        archivoResumenPercentage.write(f''',{np.round(np.average(xplRSA),3)},{np.round(np.average(xplRSA),3)}''')
 
     blob = bd.obtenerMejoresArchivos(instancia[1], "")
     
@@ -235,6 +285,12 @@ for instancia in instancias:
         if mh == 'WOA':
             bestFitnessWOA      = fitness
             bestTimeWOA         = time
+        if mh == 'PSO':
+            bestFitnessPSO      = fitness
+            bestTimePSO         = time
+        if mh == 'RSA':
+            bestFitnessRSA      = fitness
+            bestTimeRSA         = time
         
         os.remove('./Resultados/Transitorio/'+nombreArchivo+'.csv')
 
@@ -248,6 +304,11 @@ for instancia in instancias:
         axPER.plot(iteraciones, bestFitnessPSA, color="g", label="PSA")
     if incluye_woa:
         axPER.plot(iteraciones, bestFitnessWOA, color="y", label="WOA")
+    if incluye_pso:
+        axPER.plot(iteraciones, bestFitnessPSO, color="y", label="PSO")
+    if incluye_rsa:
+        axPER.plot(iteraciones, bestFitnessRSA, color="y", label="RSA")
+
     axPER.set_title(f'Coverage \n {problem}')
     axPER.set_ylabel("Fitness")
     axPER.set_xlabel("Iteration")
@@ -279,6 +340,12 @@ for instancia in instancias:
     print("------------------------------------------------------------------------------------------------------------")
     # ---------------------------------------------------------------------------------------------------------------------------------------------------------------
     datos = pd.read_csv(dirResultado+"/fitness_"+instancia[1]+'.csv')
+    print("DIR RESULTADOS")
+    print(dirResultado)
+    print("wae")
+    print(dirResultado+"/fitness_"+instancia[1]+'.csv')
+
+    print(datos)
     figFitness, axFitness = plt.subplots()
     axFitness = sns.boxplot(x='MH', y='FITNESS', data=datos)
     axFitness.set_title(f'Fitness \n{instancia[1]}', loc="center", fontdict={'fontsize': 10, 'fontweight': 'bold', 'color': 'black'})

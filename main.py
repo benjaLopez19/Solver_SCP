@@ -2,6 +2,7 @@ from Solver.solverSCP import solverSCP
 from Solver.solverB import solverB
 from BD.sqlite import BD
 import json
+import time
 # problems = ['ionosphere.data']
 bd = BD()
 
@@ -19,6 +20,10 @@ clasificador    = ''
 parametrosC     = '' 
 
 pruebas = 1
+inicio = time.time()
+
+
+
 while len(data) > 0: 
 # while pruebas == 1:
     print("-------------------------------------------------------------------------------------------------------")
@@ -50,7 +55,7 @@ while len(data) > 0:
         parMH = parametrosMH.split(",")[4]
         print(parMH)
         solverSCP(id, mh, maxIter, pop, instancia, ds, repair, parMH)
-    
+     
     if problema == 'BEN':
         bd.actualizarExperimento(id, 'ejecutando')
         lb =  float(parametrosInstancia.split(",")[0].split(":")[1])
@@ -66,6 +71,7 @@ while len(data) > 0:
 print("-------------------------------------------------------")
 print("-------------------------------------------------------")
 print("Se han ejecutado todos los experimentos pendientes.")
+print("Tiempo total:",str(time.time()-inicio))
 print("-------------------------------------------------------")
 print("-------------------------------------------------------")
 

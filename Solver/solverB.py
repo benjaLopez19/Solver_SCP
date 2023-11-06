@@ -9,6 +9,7 @@ from Metaheuristics.SCA import iterarSCA
 from Metaheuristics.WOA import iterarWOA
 from Metaheuristics.HBA import iterarHBA
 from Metaheuristics.RSA import iterarRSA
+from Metaheuristics.PSO import iterarPSO
 from util import util
 from BD.sqlite import BD
 import os
@@ -63,6 +64,11 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
     
     tiempoInicializacion2 = time.time()
     
+    #Matriz best_p y best_fit pso
+    if mh == 'PSO':
+        best_pop = poblacion.copy()
+        best_fit = fitness.copy()
+
     # mostramos nuestro fitness iniciales
     print("------------------------------------------------------------------------------------------------------")
     print("fitness incial: "+str(fitness))
@@ -101,7 +107,9 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
         if mh == 'HBA':
             poblacion = iterarHBA(maxIter, iter, dim, poblacion.tolist(), fitness.tolist(),pop)
         if mh == 'RSA':
-            poblacion = iterarRSA(maxIter, iter, dim, poblacion.tolist(), Best.tolist())
+            poblacion = iterarRSA(maxIter, iter, dim, poblacion.tolist(), Best.tolist(),lb[0],ub[0])
+        if mh == 'PSO':
+            poblacion = iterarPSO(maxIter, iter, dim, poblacion.tolist(), Best.tolist(),best_pop)
         
         # calculo de factibilidad de cada individuo y calculo del fitness inicial
         for i in range(poblacion.__len__()):
@@ -109,7 +117,14 @@ def solverB(id, mh, maxIter, pop, function, lb, ub, dim):
                 poblacion[i, j] = np.clip(poblacion[i, j], lb[j], ub[j])            
 
             fitness[i] = f(function, poblacion[i])
-            
+        
+        if mh == 'PSO':
+            for i in range(0, poblacion.__len__()):
+            # Calculate objective function for each particle
+                if best_fit[i] > fitness[i]:
+                    best_fit[i] = fitness[i]
+                    best_pop[i, :] = poblacion[i, :].copy()
+
         solutionsRanking = np.argsort(fitness) # rankings de los mejores fitness
         
         #Conservo el Best
